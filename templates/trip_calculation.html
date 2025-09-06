@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заявка #{{.Trip.ID}}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="header">
+        <a href="/" class="home-link">
+            <h1>Tesla Charge Calculator</h1>
+        </a>
+    </div>
+
+    <div class="trip-detail">
+        <div class="trip-info">
+            <div>
+                <label>Начальный заряд (кВт·ч):</label>
+                <input type="number" value="{{.Trip.StartCharge}}" disabled>
+            </div>
+            <div>
+                <label>Остаток заряда:</label>
+                <input type="text" value="{{printf "%.2f" .RemainingCharge}} кВт·ч" disabled>
+            </div>
+        </div>
+
+        <div class="scenarios-list">
+            {{range .Trip.Scenarios}}
+            <div class="scenario-container">
+                <div class="scenario-in-trip">
+                    <img src="{{.Scenario.ImageURL}}" alt="{{.Scenario.Name}}">
+                    <div class="scenario-details">
+                        <h3>{{.Scenario.Name}}</h3>
+                        <div class="scenario-parameters">
+                            <span class="scenario-parameter">Скорость: {{.Scenario.Speed}} км/ч</span>
+                            <span class="scenario-parameter">Аэродинамика: {{.Scenario.AeroCoeff}}</span>
+                            <span class="scenario-parameter">Качение: {{.Scenario.RollingCoeff}}</span>
+                            <span class="scenario-parameter">Потребление: {{.Scenario.SystemConsuption}} кВт</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="scenario-side">
+                    <div class="scenario-side-row">
+                        {{if eq .Scenario.Type "road"}}
+                        <span class="scenario-side-label">Расстояние (км)</span>
+                        <input type="number" value="{{.Value}}" class="calculation-purpose" disabled>
+                        {{else}}
+                        <span class="scenario-side-label">Время (ч)</span>
+                        <input type="number" value="{{.Value}}" class="calculation-purpose" disabled>
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+            {{end}}
+        </div>
+    </div>
+</body>
+</html>
